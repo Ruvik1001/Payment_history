@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/navigation_payment_history"
+    app:startDestination="@id/auth">
+    <fragment
+        android:id="@+id/auth"
+        android:name="com.example.paymenthistory.presentation.fragment.auth.Auth"
+        android:label="fragment_auth"
+        tools:layout="@layout/fragment_auth" >
+        <action
+            android:id="@+id/action_auth_to_history"
+            app:destination="@id/history" />
+    </fragment>
+    <fragment
+        android:id="@+id/history"
+        android:name="com.example.paymenthistory.presentation.fragment.history.History"
+        android:label="fragment_history"
+        tools:layout="@layout/fragment_history" />
+</navigation>
