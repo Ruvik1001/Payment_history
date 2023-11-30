@@ -1,21 +1,24 @@
 <resources>
     <string name="app_name">Payment history</string>
+
     <string name="username_hint">Username</string>
     <string name="password_hint">Password</string>
     <string name="login_button">Login</string>
+
     <string name="logo_description">App Logo</string>
+
     <string name="payments_title">Payments</string>
+    <string name="payments_id_title">Payment ID: %s</string>
     <string name="currency_rus">₽</string>
     <string name="currency_usd">$</string>
     <string name="currency_eur">€</string>
     <string name="no_info">NO INFO</string>
     <string name="amount_format">%s %s</string>
-    <string name="request_timeout_408">Request timeout</string>
-    <string name="network_error_404">Network error</string>
+
     <string name="DATA_FILE">temp</string>
     <string name="KEY_USER_LOGIN">USER_LOGIN</string>
     <string name="KEY_USER_TOKEN">USER_TOKEN</string>
     <string name="undefined_error">Undefined error</string>
+
     <string name="timestamp_format">dd.MM.yyyy HH:mm</string>
-    <string name="app_key">12345</string>
 </resources>

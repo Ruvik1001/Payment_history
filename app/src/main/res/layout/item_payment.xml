@@ -10,6 +10,16 @@
         android:layout_height="wrap_content">
 
         <TableRow>
+            <TextView
+                android:id="@+id/item_id"
+                android:layout_weight="1"
+                android:gravity="center_horizontal"
+                style="@style/ItemTitle"
+                android:textStyle="bold"/>
+
+        </TableRow>
+
+        <TableRow>
 
             <TableLayout
                 android:layout_weight="1">

@@ -5,17 +5,13 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.paymenthistory.R
-import com.example.paymenthistory.api.ApiService
-import com.example.paymenthistory.data.AuthError
-import com.example.paymenthistory.data.AuthResponse
-import com.example.paymenthistory.data.User
-import com.example.paymenthistory.special.isNetworkAvailable
+import com.example.domain.model.AuthResponse
+import com.example.domain.model.User
+import com.example.domain.usecase.AuthUseCase
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
 
 /**
  * ViewModel for the authentication fragment.
@@ -24,18 +20,19 @@ import retrofit2.converter.gson.GsonConverterFactory
  * @property user The user data.
  * @property responseMutableLiveData MutableLiveData to hold the authentication response.
  * @property responseLiveData LiveData to observe the authentication response.
- * @property apiService The Retrofit service for handling API requests.
  */
-class AuthViewModel(private val context: Context) : ViewModel() {
+class AuthViewModel(
+    private val context: Context,
+    private val authUseCase: AuthUseCase) : ViewModel() {
     private var user: User
     private val responseMutableLiveData = MutableLiveData<AuthResponse>()
     val responseLiveData: LiveData<AuthResponse> = responseMutableLiveData
 
-    private val apiService: ApiService = Retrofit.Builder()
-        .baseUrl("https://easypay.world/")
-        .addConverterFactory(GsonConverterFactory.create())
-        .build()
-        .create(ApiService::class.java)
+//    private val apiService: ApiService = Retrofit.Builder()
+//        .baseUrl("https://easypay.world/")
+//        .addConverterFactory(GsonConverterFactory.create())
+//        .build()
+//        .create(ApiService::class.java)
 
     init {
         user = User(
@@ -70,18 +67,7 @@ class AuthViewModel(private val context: Context) : ViewModel() {
      */
     fun auth() {
         CoroutineScope(Dispatchers.IO).launch {
-            val authResponse: AuthResponse = try {
-                apiService.login(user).body()!!
-            } catch (e: Exception) {
-                val net = isNetworkAvailable(context)
-                AuthResponse(
-                    false, null, AuthError(
-                        error_code = if (net) 408 else 403,
-                        error_msg = if (net) context.getString(R.string.request_timeout_408)
-                        else context.getString(R.string.network_error_404)
-                    )
-                )
-            }
+            val authResponse: AuthResponse = authUseCase.execute(user = user)
             withContext(Dispatchers.Main) {
                 responseMutableLiveData.postValue(authResponse)
             }

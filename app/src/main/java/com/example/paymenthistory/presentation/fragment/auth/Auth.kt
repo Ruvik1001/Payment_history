@@ -14,9 +14,9 @@ import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import com.example.paymenthistory.R
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 private const val ARG_PARAM1 = "param1"
 private const val ARG_PARAM2 = "param2"
@@ -36,7 +36,7 @@ private const val MY_PERMISSIONS_INTERNET = 10001
  */
 class Auth : Fragment() {
 
-    private lateinit var viewModel: AuthViewModel
+    private val viewModel by viewModel<AuthViewModel>()
 
     private lateinit var login: TextView
     private lateinit var password: TextView
@@ -75,8 +75,6 @@ class Auth : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_auth, container, false)
-        viewModel = ViewModelProvider(this, AuthViewModelFactory(this.requireContext()))
-            .get(AuthViewModel::class.java)
 
         // Check and request INTERNET permission if not granted
         if (ContextCompat.checkSelfPermission(
@@ -123,7 +121,7 @@ class Auth : Fragment() {
                 } else {
                     Toast.makeText(
                         this.requireContext(),
-                        "${authResponse.error!!.error_code}: ${authResponse.error.error_msg}",
+                        "${authResponse.error!!.error_code}: ${authResponse.error!!.error_msg}",
                         Toast.LENGTH_LONG
                     ).show()
                 }

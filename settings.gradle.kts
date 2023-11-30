@@ -15,4 +15,5 @@ dependencyResolutionManagement {
 
 rootProject.name = "Payment history"
 include(":app")
- 
+include(":data")
+include(":domain")
