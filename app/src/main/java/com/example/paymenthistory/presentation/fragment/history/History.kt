@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.paymenthistory.R
 import com.example.paymenthistory.adapter.PaymentRecyclerAdapter
 import com.example.paymenthistory.presentation.fragment.auth.AuthViewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 private const val ARG_PARAM1 = "param1"
 private const val ARG_PARAM2 = "param2"
@@ -35,7 +36,7 @@ class History : Fragment() {
     private var param1: String? = null
     private var param2: String? = null
 
-    private lateinit var viewModel: HistoryViewModel
+    private val viewModel by viewModel<HistoryViewModel>()
 
     private lateinit var progressBar: ProgressBar
     private lateinit var buttonLogout: AppCompatImageButton
@@ -71,9 +72,6 @@ class History : Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.fragment_history, container, false)
 
-        viewModel = ViewModelProvider(this, HistoryViewModelFactory(this.requireContext()))
-            .get(HistoryViewModel::class.java)
-
         progressBar = view.findViewById(R.id.progressBar)
         buttonLogout = view.findViewById(R.id.buttonLogout)
         recycler = view.findViewById(R.id.rv_payment)
@@ -102,7 +100,7 @@ class History : Fragment() {
                 } else {
                     Toast.makeText(
                         this.requireContext(),
-                        "${paymentResponse.error!!.error_code}: ${paymentResponse.error.error_msg}",
+                        "${paymentResponse.error!!.error_code}: ${paymentResponse.error!!.error_msg}",
                         Toast.LENGTH_LONG
                     ).show()
                 }

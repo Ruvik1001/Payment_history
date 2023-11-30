@@ -1,9 +1,8 @@
-package com.example.paymenthistory.api
+package com.example.data.api
 
-import com.example.paymenthistory.R
-import com.example.paymenthistory.data.AuthResponse
-import com.example.paymenthistory.data.PaymentResponse
-import com.example.paymenthistory.data.User
+import com.example.domain.model.AuthResponse
+import com.example.domain.model.PaymentResponse
+import com.example.domain.model.User
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET

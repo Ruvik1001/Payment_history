@@ -1,4 +1,4 @@
-package com.example.paymenthistory.data
+package com.example.domain.model
 
 /**
  * Data class representing user credentials.

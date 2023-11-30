@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.paymenthistory.R
-import com.example.paymenthistory.data.Payment
+import com.example.domain.model.Payment
 import okhttp3.internal.notify
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -28,6 +28,7 @@ class PaymentRecyclerAdapter(private val paymentList: MutableList<Payment?>) :
      * @property amount TextView for displaying the payment amount.
      */
     class PaymentViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        val id: TextView = itemView.findViewById(R.id.item_id)
         val title: TextView = itemView.findViewById(R.id.title)
         val timestamp: TextView = itemView.findViewById(R.id.description)
         val amount: TextView = itemView.findViewById(R.id.amount)
@@ -62,23 +63,30 @@ class PaymentRecyclerAdapter(private val paymentList: MutableList<Payment?>) :
             return
         }
 
+        // Format and set the payment id
+        holder.id.text = String.format(
+            holder.amount.context.getString(R.string.payments_id_title),
+            currentItem!!.id.toString()
+        )
+
         // Format and set the payment title
-        holder.title.text = currentItem!!.title
-            ?: holder.title.context.getString(R.string.no_info)
+        val correctTitle: Boolean = currentItem.title != null && currentItem.title != ""
+        holder.title.text = if (correctTitle) currentItem.title else holder.title.context.getString(R.string.no_info)
 
         // Format and set the payment timestamp
         val sdf = SimpleDateFormat(holder.timestamp.context.getString(R.string.timestamp_format))
         sdf.timeZone = TimeZone.getDefault()
-        holder.timestamp.text = if (currentItem.created != null && currentItem.created != "") sdf.format(
-            Date(currentItem.created.toLong() * 1000L)).toString()
+        val correctTimestamp: Boolean = currentItem.created != null && currentItem.created != ""
+        holder.timestamp.text = if (correctTimestamp) sdf.format(
+            Date(currentItem.created!!.toLong() * 1000L)).toString()
         else holder.timestamp.context.getString(R.string.no_info)
 
         // Format and set the payment amount
+        val correctAmount: Boolean = currentItem.amount != null && currentItem.amount != ""
         holder.amount.text = String.format(
             holder.amount.context.getString(R.string.amount_format),
-            if (currentItem.amount != null && currentItem.amount != "") currentItem.amount
-            else holder.amount.context.getString(R.string.no_info),
-            holder.amount.context.getString(R.string.currency_rus)
+            if (correctAmount) currentItem.amount else holder.amount.context.getString(R.string.no_info),
+            if (correctAmount) holder.amount.context.getString(R.string.currency_eur) else ""
         )
     }
 
